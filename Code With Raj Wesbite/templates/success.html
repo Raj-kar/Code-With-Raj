@@ -1,0 +1,24 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('../static/img/success-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>Success</h1>
+            <span class="subheading">Your message send to Raj successfully !</span>
+              <span class="subheading"><a style="color: #0085a1;" href="{{ url_for('get_all_posts') }}">Go to Home
+                  Page.</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% include "footer.html" %}
+{% endblock %}
