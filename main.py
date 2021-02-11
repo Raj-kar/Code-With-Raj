@@ -21,6 +21,9 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 ##CONNECT TO DB
+# for develop locally
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+# for server
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -229,7 +232,7 @@ def edit_post(post_id):
 
         return redirect(url_for("show_post", post_id=post.id))
 
-    return render_template("make-post.html", form=edit_form)
+    return render_template("make-post.html", form=edit_form, is_edit=True)
 
 
 @app.route("/delete/<int:post_id>")
@@ -288,3 +291,5 @@ def robots():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+    # for local env and testing
+    # app.run(debug=True)
