@@ -14,7 +14,8 @@ from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from KEYS import email, password
-from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm, VerifyForm
+from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm, VerifyForm, ForgetPassword, \
+    NewPassword
 from send_email import SendOTP
 
 app = Flask(__name__)
@@ -22,18 +23,18 @@ app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-##CONNECT TO DB
+# CONNECT TO DB
 # for develop locally
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 # for server
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Gravtar
+# Gravatar
 gravatar = Gravatar(app,
                     size=100,
                     rating='g',
@@ -49,7 +50,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-##CONFIGURE TABLES
+# CONFIGURE TABLES
 
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
@@ -72,6 +73,12 @@ class User(UserMixin, db.Model):
     # *******Add parent relationship*******#
     # "comment_author" refers to the comment_author property in the Comment class.
     comments = relationship("Comment", back_populates="comment_author")
+
+    # TODO-1 add methods for quick access
+    # @staticmethod
+    # def search_by_email(user_email):
+    #     user = User.query.filter_by(email=user_email).first()
+    #     return user if user else False
 
 
 class Comment(db.Model):
@@ -99,8 +106,8 @@ def admin_only(f):
         current_user_id = None
         try:
             current_user_id = current_user.id
-        except Exception:
-            pass
+        except Exception as e:
+            print(e)
         finally:
             # If id is not 1 then return abort with 403 error
             if current_user_id != 1:
@@ -121,18 +128,18 @@ def get_all_posts():
 def register():
     form = RegisterForm()
     if request.method == "POST" and form.validate_on_submit():
-        email = request.form.get("email")
+        user_email = request.form.get("email")
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=user_email).first()
         if user:
             flash("You've already signed up with this email, login instead.")
             return redirect(url_for('login'))
         else:
             name = request.form.get("name")
-            password = request.form.get("password")
-            hashed_password = generate_password_hash(password=password, method='pbkdf2:sha256', salt_length=8)
+            user_password = request.form.get("password")
+            hashed_password = generate_password_hash(password=user_password, method='pbkdf2:sha256', salt_length=8)
 
-            return redirect(url_for('verify_otp', name=name, user_email=email, user_password=hashed_password))
+            return redirect(url_for('verify_otp', name=name, user_email=user_email, user_password=hashed_password))
 
     return render_template("register.html", form=form)
 
@@ -141,13 +148,13 @@ def register():
 def login():
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():
-        email = request.form.get("email")
-        password = request.form.get("password")
+        user_email = request.form.get("email")
+        user_password = request.form.get("password")
 
         all_users = User.query.all()
         for user in all_users:
-            if user.email == email:
-                if check_password_hash(user.password, password):
+            if user.email == user_email:
+                if check_password_hash(user.password, user_password):
                     login_user(user)
                     return redirect(url_for('get_all_posts'))
                 else:
@@ -268,7 +275,8 @@ def contact():
             connection.starttls()
             connection.login(user=email, password=password)
             connection.sendmail(from_addr=email, to_addrs="rajkar921@gmail.com",
-                                msg=f"Subject:Contact\n\nName: {name}\nEmail: {user_email}\nphone_number: {phone_number}\nmessage: {message}")
+                                msg=f"Subject:Contact\n\nName: {name}\nEmail: {user_email}"
+                                    f"\nphone_number: {phone_number}\nmessage: {message}")
         return redirect(url_for('success'))
 
     return render_template("contact.html", form=form)
@@ -282,7 +290,7 @@ def success():
 
 otp = None
 
-
+# TODO-3 refactor verify-user code
 @app.route('/verify-otp/<name>/<user_email>/<user_password>', methods=["GET", "POST"])
 def verify_otp(name, user_email, user_password):
     global otp
@@ -292,6 +300,7 @@ def verify_otp(name, user_email, user_password):
         flash(f"An OTP is send to your email ({user_email}) address.")
         otp = randint(123456, 987654)
         send_otp = SendOTP(user_name=name, user_email=user_email, otp=otp)
+        send_otp.register_msgBody()
         send_otp.send_otp()
 
     if request.method == "POST" and form.validate_on_submit():
@@ -311,12 +320,68 @@ def verify_otp(name, user_email, user_password):
     return render_template("email-verification.html", form=form)
 
 
+# TODO-2 refactor forget-password code
+@app.route('/forget-password', methods=["POST", "GET"])
+def forgot_password():
+    form = ForgetPassword()
+
+    if request.method == "POST" and form.validate_on_submit():
+        user_email = request.form.get("email")
+        user_data = User.query.filter_by(email=user_email).first()
+        if user_data:
+            flash("An OTP send to your email address.")
+            return redirect(url_for('verify_user_otp', name=user_data.name, user_email=user_data.email))
+        else:
+            flash("No account link with this email ! Please check your email.")
+
+    return render_template('forgot-password.html', form=form)
+
+
+@app.route('/verify-otp/<name>/<user_email>', methods=["POST", "GET"])
+def verify_user_otp(name, user_email):
+    global otp
+    form = VerifyForm()
+
+    if request.method == "GET":
+        otp = randint(123456, 987654)
+        otp_send = SendOTP(user_name=name, user_email=user_email, otp=otp)
+        otp_send.forgot_password_msgBody()
+        otp_send.send_otp()
+
+    if request.method == "POST" and form.validate_on_submit():
+        user_otp = int(request.form.get("otp"))
+        if user_otp == otp:
+            print(user_otp, otp)
+            flash("Enter your new password, and note it in your dairy.")
+            return redirect(url_for('reset_password', user_email=user_email))
+        else:
+            flash("Wrong credentials provided, Please try again !")
+            return redirect(url_for('login'))
+
+    return render_template("forgot-password.html", form=form)
+
+
+@app.route('/reset-password/<user_email>', methods=["POST", "GET"])
+def reset_password(user_email):
+    form = NewPassword()
+    if request.method == "POST" and form.validate_on_submit():
+        new_password = request.form.get("password")
+        user = User.query.filter_by(email=user_email).first()
+        user.password = generate_password_hash(password=new_password, method="pbkdf2:sha256", salt_length=8)
+        db.session.commit()
+        return redirect(url_for('login'))
+
+    return render_template('forgot-password.html', form=form)
+
+
 @app.route('/robots.txt')
 def robots():
     return render_template('robots.html')
 
+# TODO-4 add category
+# TODO-5 add spider for scrap data through worldwide
 
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)
     # for local env and testing
-    app.run(debug=True)
+    # app.run(debug=True)

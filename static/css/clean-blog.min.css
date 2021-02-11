@@ -532,3 +532,9 @@ footer .copyright {
     color: red;
     margin-top: 0;
 }
+
+#forget-password {
+    text-align : right;
+    justify-content : right;
+    display : block;
+}

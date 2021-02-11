@@ -42,3 +42,13 @@ class ContactForm(FlaskForm):
 class VerifyForm(FlaskForm):
     otp = StringField(label="Enter OTP", validators=[DataRequired(), Length(min=6)])
     submit = SubmitField(label="VALIDATE")
+
+
+class ForgetPassword(FlaskForm):
+    email = StringField("Enter your Email", validators=[DataRequired(), Email()])
+    submit = SubmitField(label="SEARCH ACCOUNT")
+
+
+class NewPassword(FlaskForm):
+    password = PasswordField(label="Password", validators=[DataRequired(), Length(min=8)])
+    submit = SubmitField(label="SEARCH ACCOUNT")
