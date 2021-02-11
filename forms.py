@@ -34,6 +34,11 @@ class CommentForm(FlaskForm):
 class ContactForm(FlaskForm):
     name = StringField(label="Name", validators=[DataRequired()])
     email = StringField(label="Email", validators=[DataRequired(), Email()])
-    phone_number = IntegerField(label="Phone Number (optional)",)
+    phone_number = IntegerField(label="Phone Number (optional)", )
     message = TextAreaField(label="Message", validators=[DataRequired()])
     submit = SubmitField(label="SEND")
+
+
+class VerifyForm(FlaskForm):
+    otp = StringField(label="Enter OTP", validators=[DataRequired(), Length(min=6)])
+    submit = SubmitField(label="VALIDATE")

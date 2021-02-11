@@ -1,7 +1,8 @@
+import os
 import smtplib
 from datetime import date
 from functools import wraps
-import os
+from random import randint
 
 from flask import Flask, render_template, redirect, url_for, flash, request, abort
 from flask_bootstrap import Bootstrap
@@ -13,7 +14,7 @@ from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from KEYS import email, password
-from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm
+from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm, VerifyForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
@@ -22,9 +23,9 @@ Bootstrap(app)
 
 ##CONNECT TO DB
 # for develop locally
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 # for server
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -129,14 +130,8 @@ def register():
             name = request.form.get("name")
             password = request.form.get("password")
             hashed_password = generate_password_hash(password=password, method='pbkdf2:sha256', salt_length=8)
-            new_user = User(name=name, email=email, password=hashed_password)
-            db.session.add(new_user)
-            db.session.commit()
 
-            # This line will authenticate the user with Flask-Login
-            login_user(new_user)
-
-            return redirect(url_for('get_all_posts'))
+            return redirect(url_for('verify_opt', name=name, user_email=email, user_password=hashed_password))
 
     return render_template("register.html", form=form)
 
@@ -283,6 +278,41 @@ def contact():
 def success():
     return render_template('success.html')
 
+otp = None
+@app.route('/verify-otp/<name>/<user_email>/<user_password>', methods=["GET", "POST"])
+def verify_opt(name, user_email, user_password):
+    global otp
+    form = VerifyForm()
+
+    if request.method == "GET":
+        flash(f"An OTP is send to your email ({user_email}) address.")
+        otp = randint(123456, 987654)
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=email, password=password)
+            connection.sendmail(from_addr=email, to_addrs={user_email},
+                                msg=f"Subject:Verify Email at CodeWithRaj\n\n"
+                                    f"We received a request to register the {name} account to Code-With-Raj."
+                                    f"\nTo complete the process you must active your account. "
+                                    f"\nYour OTP is {otp}.\n\n"
+                                    f"If you didn't intend this, just ignore this message")
+
+    if request.method == "POST" and form.validate_on_submit():
+        enter_otp = int(request.form.get("otp"))
+        if enter_otp == otp:
+            new_user = User(name=name, email=user_email, password=user_password)
+            db.session.add(new_user)
+            db.session.commit()
+
+            # This line will authenticate the user with Flask-Login
+            login_user(new_user)
+            return redirect(url_for('get_all_posts'))
+        else:
+            flash("OTP mismatched, another OTP send to your email address.")
+            return redirect(url_for('verify_opt', name=name, user_email=user_email, user_password=user_password))
+
+    return render_template("email-verification.html", form=form)
+
 
 @app.route('/robots.txt')
 def robots():
@@ -290,6 +320,6 @@ def robots():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0', port=5000)
     # for local env and testing
-    # app.run(debug=True)
+    app.run(debug=True)
