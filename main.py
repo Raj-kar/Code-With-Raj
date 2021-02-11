@@ -15,6 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from KEYS import email, password
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm, VerifyForm
+from send_email import SendOTP
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
@@ -131,7 +132,7 @@ def register():
             password = request.form.get("password")
             hashed_password = generate_password_hash(password=password, method='pbkdf2:sha256', salt_length=8)
 
-            return redirect(url_for('verify_opt', name=name, user_email=email, user_password=hashed_password))
+            return redirect(url_for('verify_otp', name=name, user_email=email, user_password=hashed_password))
 
     return render_template("register.html", form=form)
 
@@ -278,24 +279,20 @@ def contact():
 def success():
     return render_template('success.html')
 
+
 otp = None
+
+
 @app.route('/verify-otp/<name>/<user_email>/<user_password>', methods=["GET", "POST"])
-def verify_opt(name, user_email, user_password):
+def verify_otp(name, user_email, user_password):
     global otp
     form = VerifyForm()
 
     if request.method == "GET":
         flash(f"An OTP is send to your email ({user_email}) address.")
         otp = randint(123456, 987654)
-        with smtplib.SMTP("smtp.gmail.com") as connection:
-            connection.starttls()
-            connection.login(user=email, password=password)
-            connection.sendmail(from_addr=email, to_addrs={user_email},
-                                msg=f"Subject:Verify Email at CodeWithRaj\n\n"
-                                    f"We received a request to register the {name} account to Code-With-Raj."
-                                    f"\nTo complete the process you must active your account. "
-                                    f"\nYour OTP is {otp}.\n\n"
-                                    f"If you didn't intend this, just ignore this message")
+        send_otp = SendOTP(user_name=name, user_email=user_email, otp=otp)
+        send_otp.send_otp()
 
     if request.method == "POST" and form.validate_on_submit():
         enter_otp = int(request.form.get("otp"))
@@ -309,7 +306,7 @@ def verify_opt(name, user_email, user_password):
             return redirect(url_for('get_all_posts'))
         else:
             flash("OTP mismatched, another OTP send to your email address.")
-            return redirect(url_for('verify_opt', name=name, user_email=user_email, user_password=user_password))
+            return redirect(url_for('verify_otp', name=name, user_email=user_email, user_password=user_password))
 
     return render_template("email-verification.html", form=form)
 
