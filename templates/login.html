@@ -2,22 +2,11 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-{% include "header.html" %}
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('https://i.ibb.co/DkpZ3WD/login.jpg')">
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="page-heading">
-            <h1>Log In</h1>
-            <span class="subheading">Welcome Back Geek!</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+    {% with img_url="https://i.ibb.co/DkpZ3WD/login.jpg" ,heading="Log In", subheading = "Welcome Back Geek!" %}
+        {% include "header.html" %}
+    {% endwith %}
 
   <div class="container">
     <div class="row">

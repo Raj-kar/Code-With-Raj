@@ -1,4 +1,7 @@
-{% include "header.html" %}
+{% with inherit=False %}
+      {% include "header.html" %}
+{% endwith %}
+
 {% import "bootstrap/wtf.html" as wtf %}
 
   <!-- Page Header -->

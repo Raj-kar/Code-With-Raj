@@ -2,8 +2,10 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-{% include "header.html" %}
 
+{% with inherit=False %}
+    {% include "header.html" %}
+{% endwith %}
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('https://i.ibb.co/V2F8pwY/success-bg.jpg')">
     <div class="overlay"></div>

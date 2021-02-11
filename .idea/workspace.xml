@@ -2,23 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30ee8bd0-f3e2-4ce1-a0cf-d54fa2a7a7b3" name="Default Changelist" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/templates/email-verification.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KEYS.py" beforeDir="false" afterPath="$PROJECT_DIR$/KEYS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog.db" beforeDir="false" afterPath="$PROJECT_DIR$/blog.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/about-bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/contact-bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/edit-bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/home-1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/home-2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/login.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/register.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/img/success-bg.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/about.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/make-post.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/make-post.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/post.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/success.html" afterDir="false" />
     </list>
@@ -30,6 +25,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -47,9 +43,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Courses/Master the Coding Interview Data Structures Algorithms/100 Days of Python" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -246,7 +243,21 @@
       <option name="project" value="LOCAL" />
       <updated>1613036352302</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="ver 1.0.1 - load images from clouds.">
+      <created>1613039215818</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1613039215818</updated>
+    </task>
+    <task id="LOCAL-00011" summary="ver 1.0.1 - load images from clouds.">
+      <created>1613039257824</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1613039257824</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -272,6 +283,7 @@
     <MESSAGE value="add server host and port." />
     <MESSAGE value="add email validator package." />
     <MESSAGE value="add .env variables and change sqlite to postgres" />
-    <option name="LAST_COMMIT_MESSAGE" value="add .env variables and change sqlite to postgres" />
+    <MESSAGE value="ver 1.0.1 - load images from clouds." />
+    <option name="LAST_COMMIT_MESSAGE" value="ver 1.0.1 - load images from clouds." />
   </component>
 </project>

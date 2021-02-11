@@ -1,19 +1,7 @@
-{% include "header.html" %}
-
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('https://i.ibb.co/0rcjRG6/home-2.jpg') ">
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="site-heading">
-            <h1>Code with Raj</h1>
-            <span class="subheading">A collection of Raj's coding stuffs.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+{% with img_url="https://i.ibb.co/0rcjRG6/home-2.jpg" ,heading="Code with Raj", subheading = "A collection of Raj's coding stuffs." %}
+    {% include "header.html" %}
+{% endwith %}
 
   <!-- Main Content -->
   <div class="container">
