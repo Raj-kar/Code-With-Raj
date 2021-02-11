@@ -1,3 +1,6 @@
+# TODO - set environment variable email and password, delete KEYS.py
+
+import os
 import smtplib
 from datetime import date
 from functools import wraps
@@ -11,8 +14,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from KEYS import email, password
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, ContactForm
+from KEYS import email, password
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
