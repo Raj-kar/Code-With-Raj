@@ -290,6 +290,7 @@ def success():
 
 otp = None
 
+
 # TODO-3 refactor verify-user code
 @app.route('/verify-otp/<name>/<user_email>/<user_password>', methods=["GET", "POST"])
 def verify_otp(name, user_email, user_password):
@@ -378,8 +379,11 @@ def reset_password(user_email):
 def robots():
     return render_template('robots.html')
 
+
 # TODO-4 add category
 # TODO-5 add spider for scrap data through worldwide
+# TODO-6 each profile has an separate user profile
+# TODO-7 admin can see user list, and also can delete users, can create test accounts.
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

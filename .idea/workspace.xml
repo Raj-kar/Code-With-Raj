@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30ee8bd0-f3e2-4ce1-a0cf-d54fa2a7a7b3" name="Default Changelist" comment="initial commit">
-      <change afterPath="$PROJECT_DIR$/templates/forgot-password.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog.db" beforeDir="false" afterPath="$PROJECT_DIR$/blog.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/send_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/send_email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/clean-blog.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/clean-blog.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +273,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613073932759</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="ver 1.2.3 - Forget password feature added.">
+      <created>1613080235553</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1613080235553</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -310,6 +310,7 @@
     <MESSAGE value="ver 1.0.2 - update templates headers -by create header template." />
     <MESSAGE value="ver 1.1.2 - add OTP validations in register." />
     <MESSAGE value="ver 1.1.3 -OTP sending format updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="ver 1.1.3 -OTP sending format updated." />
+    <MESSAGE value="ver 1.2.3 - Forget password feature added." />
+    <option name="LAST_COMMIT_MESSAGE" value="ver 1.2.3 - Forget password feature added." />
   </component>
 </project>
